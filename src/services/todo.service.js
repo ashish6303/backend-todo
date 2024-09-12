@@ -5,16 +5,27 @@ import { ApiError } from "../utils/ApiError.js";
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id) && id.length === 24;
 
-const createTaskService = async (taskData) => {
+const createTaskService = async (userId, taskData) => {
     try {
-        const user = await User.findById(taskData.owner);
+        // Validate userId
+        if (!isValidObjectId(userId)) {
+            throw new ApiError(400, "Invalid userId format");
+        }
+
+        const user = await User.findById(userId);
         if (!user) throw new ApiError(403, 'User not found');
-        const newTask = new Task(taskData);
+
+        // Create task with the userId as owner
+        const newTask = new Task({
+            ...taskData,
+            owner: userId
+        });
+
         return await newTask.save();
     } catch (error) {
-        throw new ApiError(400, 'Failed to create new task')
+        throw new ApiError(400, 'Failed to create new task');
     }
-}
+};
 
 const getTaskService = async (userId) => {
     try {
