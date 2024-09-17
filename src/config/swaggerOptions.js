@@ -14,9 +14,11 @@ const options = {
             },
         ],
     },
-    apis: ['./src/routes/*.js'], // Adjust to where your route files are located
+    apis: [
+        './docs/apis/**/*.js',
+        './docs/schemas/**/*.js'
+    ]
 };
 
 const specs = swaggerJsdoc(options);
-
 export default specs;

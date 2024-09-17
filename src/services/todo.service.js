@@ -9,7 +9,7 @@ const createTaskService = async (userId, taskData) => {
     try {
         // Validate userId
         if (!isValidObjectId(userId)) {
-            throw new ApiError(400, "Invalid userId format");
+            return res.status(400).json(new ApiResponse(400, null, "User does not exixts"));
         }
 
         const user = await User.findById(userId);

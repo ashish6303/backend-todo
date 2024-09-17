@@ -1,6 +1,28 @@
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 
+const findUserByUsername = async (username) => {
+    try {
+        return await User.findOne({ username });
+    } catch (error) {
+        console.error("Error in findUserByUsername:", error);
+        throw new ApiError(500, "Database query failed");
+    }
+};
+
+const findUserByEmail = async (email) => {
+    try {
+        return await User.findOne({ email });
+    } catch (error) {
+        console.error("Error in findUserByEmail:", error);
+        throw new ApiError(500, "Database query failed");
+    }
+};
+
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
 
 const createUser = async ({ username, email }) => {
     // Create a new user
@@ -86,4 +108,4 @@ const userUpdateService = async ({ userId, userdata }) => {
 };
 
 
-export { registerUser, getAllUser, deleteUserService, userUpdateService };
+export { registerUser, getAllUser, deleteUserService, userUpdateService, findUserByUsername, findUserByEmail, isValidEmail };
