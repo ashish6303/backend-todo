@@ -30,6 +30,7 @@ const createUser = async ({ username, email }) => {
         username: username.toLowerCase(),
         email: email.toLowerCase()
     });
+    // console.log(user);
     return user;
 };
 
@@ -58,12 +59,7 @@ const registerUser = async ({ username, email }) => {
         if (!user) {
             throw new ApiError(500, "User creation failed");
         }
-    
-        // Extract relevant fields and log them
-        const { username: createdUsername, email: createdEmail } = user;
-    
-        // Return only the relevant fields
-        return { username: createdUsername, email: createdEmail };
+        return user;
     } catch (error) {
         throw new ApiError(500, "Something went wrong");
     }
@@ -85,11 +81,11 @@ const deleteUserService = async (userId) => {
 const userUpdateService = async ({ userId, userdata }) => {
     try {
         const user = await User.findByIdAndUpdate(
-            userId, 
-            userdata, 
+            userId,
+            userdata,
             {
-                new: true, 
-                runValidators: false 
+                new: true,
+                runValidators: false
             }
         );
 

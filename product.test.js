@@ -20,6 +20,8 @@ describe('User API', () => {
         await mongoose.connection.close();
     });
 
+    let userId;
+
     it('should create a new user', async () => {
         const newUser = {
             username: 'testuser',
@@ -32,12 +34,13 @@ describe('User API', () => {
 
         expect(response.status).toBe(201);
         expect(response.body.success).toBe(true);
-        // expect(response.body.data).toHaveProperty('_id'); // Ensure an ID is returned
+        expect(response.body.data).toHaveProperty('_id'); // Ensure an ID is returned
         expect(response.body.data.username).toBe(newUser.username);
         expect(response.body.data.email).toBe(newUser.email);
 
         // Store the created user ID for later deletion
-        // createdUserId = response.body.data._id;
+        userId = response.body.data._id;
+        console.log(userId, "userID")
     });
 
     it('should fetch all users', async () => {
@@ -48,5 +51,31 @@ describe('User API', () => {
         expect(Array.isArray(response.body.data)).toBe(true);
     });
 
-    
+    it('should update the user', async () => {
+        const updatedUser = {
+            username: 'updatedUser',
+            email: 'updated@example.com',
+        };
+
+        const response = await request(app)
+            .put(`/api/v1/user/${userId}`)
+            .send(updatedUser);
+
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
+        expect(response.body.message).toBe('User updated successfully');
+        // expect(response.body.data.username).toBe(updatedUser.username);
+        // expect(response.body.data.email).toBe(updatedUser.email);
+    });
+
+    it('should delete the user', async () => {
+        const response = await request(app)
+            .delete(`/api/v1/user/${userId}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.success).toBe(true);
+        expect(response.body.message).toBe('User deleted successfully');
+    });
+
+
 });

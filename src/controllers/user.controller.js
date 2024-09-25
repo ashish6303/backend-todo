@@ -30,15 +30,16 @@ const registerUserController = asyncHandler(async (req, res) => {
             return res.status(400).json(new ApiResponse(400, null, "Email already exists"));
         }
 
-
         // Call the service to register the user
         const createUser = await registerUser({ username, email });
+
+        // console.log("createUser ", createUser); // Should include _id here
 
         // Send successful response
         return res.status(201).json(
             new ApiResponse(
                 201,
-                createUser,
+                { _id: createUser._id, username: createUser.username, email: createUser.email },
                 "User created successfully"
             )
         );
