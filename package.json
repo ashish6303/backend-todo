@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/main.js",
-    "test": "cross-env NODE_ENV=test jest --collect-coverage --testTimeout=30000 --config jest.config.mjs"
+    "test": "cross-env NODE_ENV=test jest --runInBand --collect-coverage --testTimeout=30000 --config jest.config.mjs"
   },
   "keywords": [
     "nodejs",
