@@ -68,7 +68,6 @@ const editTaskService = async ({taskId, taskData}) => {
             { new: true, runValidators: false }
         )
         return updatetTask;
-        console.log(updatetTask, "updated task");
     } catch (error) {
         console.log("Error is : ", error);
         throw new ApiError(500, "Something went wrong");

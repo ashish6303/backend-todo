@@ -9,6 +9,8 @@ describe('Todo API', () => {
     let url = '/api/v1/user';
     let userId;
     let taskId;
+    let wrongUserId = '5f50c31b3fd18d3f1a4040';
+    let wrongTaskId = '5f50c31b3fd18d3f1a4040'
 
     beforeAll(async () => {
         const MONGODB_URI = process.env.MONGODB_URI;
@@ -54,17 +56,20 @@ describe('Todo API', () => {
     it('should create a new task', async () => {
         const taskData = { text: 'Test task', completed: false };
         const response = await createTask(taskData);
-        
         expect(response.status).toBe(201);
         expect(response.body.success).toBe(true);
         expect(response.body.data).toHaveProperty('_id');
-
         taskId = response.body.data._id; // Store task ID for later tests
     });
 
+    it('should create a new task without data', async() => {
+        const taskData = {completed: false };
+        expect(response.status).toBe(400);
+        expect(response.body.success).toBe(false);
+    })
+
     it('should fetch all tasks', async () => {
         const response = await fetchTasks();
-        
         expect(response.status).toBe(200);
         expect(response.body.success).toBe(true);
         expect(Array.isArray(response.body.data)).toBe(true);
@@ -73,19 +78,28 @@ describe('Todo API', () => {
     it('should update the task', async () => {
         const updatedTaskData = { text: 'Updated test task', completed: true };
         const response = await updateTask(taskId, updatedTaskData);
-        
         expect(response.status).toBe(200);
         expect(response.body.success).toBe(true);
         expect(response.body.message).toBe('Task Updated Successfully');
     });
 
+    it('should not update task with wrong id', async () => {
+        const updatedTaskData = { text: 'Updated test task', completed: true };
+        const response = await updateTask(wrongTaskId, updatedTaskData);
+        expect(response.status).toBe(404);
+    });
+
     it('should delete the task', async () => {
         const response = await deleteTask(taskId);
-        
         expect(response.status).toBe(200);
         expect(response.body.success).toBe(true);
         expect(response.body.message).toBe('Task deleted Successfully');
     });
+
+    it('should not delete task with wrong id', async () => {
+        const response = await deleteTask(wrongTaskId);
+        expect(response.status).toBe(404);
+    })
 
     it('should delete all tasks for a user', async () => {
         const taskData1 = { text: 'Task 1', completed: false };
@@ -100,4 +114,10 @@ describe('Todo API', () => {
         expect(response.body.success).toBe(true);
         expect(response.body.message).toBe('All task deleted Successfully');
     });
+    
+    
+
+
+
+
 });

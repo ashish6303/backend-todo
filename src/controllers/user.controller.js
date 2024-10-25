@@ -66,13 +66,10 @@ const getAllUserController = asyncHandler(async (req, res) => {
 
 const deleteUserController = asyncHandler(async (req, res) => {
     const userId = req.params.userId;
-    if (!userId) {
-        return res.status(400).json(new ApiResponse(400, null, "User does not exist"));
-    }
-
     const existedUser = await User.findById(userId);
-    if(!existedUser){
-        return res.status(400).json(new ApiResponse(400, null, "User does not exist"));
+
+    if (!userId || !existedUser) {
+        return res.status(404).json(new ApiResponse(404, null, "User does not exist"));
     }
 
     try {
@@ -102,9 +99,6 @@ const updateUserController = asyncHandler(async (req, res) => {
     if (!userdata || Object.keys(userdata).length === 0) {
         return res.status(400).json(new ApiResponse(400, null, "User data not provided"));
     }
-
-    console.log("Requested data is : ", userdata);
-
     const usesdataname = userdata.username;
 
     if (userdata.username) {
@@ -143,10 +137,7 @@ const updateUserController = asyncHandler(async (req, res) => {
                 "User updated successfully"
             )
         )
-
 })
-
-
 
 
 export { registerUserController, getAllUserController, deleteUserController, updateUserController }
