@@ -21,6 +21,10 @@ app.use(cookieParser());
 // Swagger setup
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Backend is running' });
+});
+
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/user', todoRoutes);
 
