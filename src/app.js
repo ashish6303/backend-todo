@@ -24,6 +24,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.get('/', (req, res) => {
     res.json({ message: 'Backend is running' });
 });
+app.get('/test',  (req, res) => {
+    res.json({ message: 'Test route is running' }); 
+    });
 
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/user', todoRoutes);
