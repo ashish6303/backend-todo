@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Start the application using main.js inside the src folder
-CMD ["node", "src/mai.js"]
+CMD ["node", "src/main.js"]
