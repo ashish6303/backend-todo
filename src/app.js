@@ -22,7 +22,7 @@ app.use(cookieParser());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 app.get('/', (req, res) => {
-    console.log("This is test");
+    console.log("This is test1");
     res.json({ message: 'Backend is running daily' });
 });
 app.get('/test',  (req, res) => {
